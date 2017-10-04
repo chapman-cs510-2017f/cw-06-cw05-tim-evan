@@ -15,11 +15,32 @@ from abscplane import AbsComplexPlane
 from abscplane import AbsComplexPlane
 
 class ArrayComplexPlane(AbsComplexPlane):
+    """ArrayComplexPlane that subclasses the abstract base class AbsComplexPlanes
+    Args:
+        xmin (float): plane's min real value
+        xmax (float): plane's max real value
+        xlen   (int): # pnts spanning [xmin, xmax]
+        ymin (float): plane's min imag value
+        ymax (float): plane's max imag value
+        ylen   (int): # pnts spanning [ymin, ymax]
+
+    Attributes:
+        plane (): a meshgrid of two linspaces x, and y values. is the current state of the complex plane
+        fs (list): holds all functions f that were applied to plane in a list data structure
+
+    Functions:
+        __init__(self,xmin,xmax,xlen,ymin,ymax,ylen)    :constructor, sets all args to given input, then constructs plane attribute using args
+        __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen)  :private fxn that acts much like a second constructor, resets plane and args to given input
+        printPlane(self)                                :prints plane
+        refresh(self)                                   :resets plane to args values and sets fs = []. does this by calling __setPlane, then clearing the fs
+        apply(self, f, addTofs)                         :applys function f to all pnts in plane, and adds f to fs iff addTofs = True
+        zoom(self,xmin,xmax,xlen,ymin,ymax,ylen)        :resets plane size and reapplys all f in fs in order. does this using apply and __setPlane
+    """
+
     def __init__(self,xmin,xmax,xlen,ymin,ymax,ylen):
         """this function is the constructor and implements all private vars to given input,
         implements self.plane(complex plane) using the given input
         Args:
-            self (key word): to refrence private vars
             xmin (int): minimum x value in table
             xmax (int): maximum x value in table
             xlen (int): # x points
@@ -49,68 +70,10 @@ class ArrayComplexPlane(AbsComplexPlane):
         self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
         return
 
-    def printTable(self):
-        """this function prints complex plane in a legible fashion.
-        Args:
-            self (key word): to refrence private vars
-        Return:
-            Null: returns nothing
-        """
-        print("##########################-Complex Plane-##############################")
-        print(self.plane)
-        print("#######################################################################")
-        return
-
-    def refresh(self):
-        """this function resets self.plane to private stored variables that define the table
-        and clears all functions applied by setting self.fs = []
-        Args:
-           self (key word): to refrence private vars
-        Return:
-           Null: returns nothing
-        """
-
-        x = np.linspace(self.xmin,self.xmax,self.xlen)
-        y = np.linspace(self.ymin,self.ymax,self.ylen)
-        xx, yy = np.meshgrid(x, y)
-        self.plane = xx - yy*1j
-
-        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
-
-        self.fs = []
-        return
-
-    def apply(self, f):
-        """this function adds given input f to self.fs, then
-        applies f to all pnts in self.plane
-        Args:
-            self (key word): to refrence private vars
-            f (fxn): complex function
-        Return:
-            Null: returns nothing
-        """
-        self.fs.append(f)
-        self.plane = f(self.plane)
-        return
-
-    def applyAllf(self):
-        """applies all of the transformations in fs, in order, to the plane
-        without adding functions to fs. This changes self.plane
-        Args:
-            self (key word): to refrence private vars
-        Return:
-            Null: returns nothing
-        """
-        for k in range(len(self.fs)):
-            f = self.fs[k]
-            self.plane = f(self.plane)
-        return
-
     def __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen):
         """this function sets private vars to given input,
         and uses given input to create and set self.plane
         Args:
-            self (key word): to refrence private vars
             xmin (int): minimum x value in table
             xmax (int): maximum x value in table
             xlen (int): # x points
@@ -136,12 +99,49 @@ class ArrayComplexPlane(AbsComplexPlane):
 
         return
 
+    def printPlane(self):
+        """this function prints complex plane in a legible fashion.
+        Args:
+            none
+        Return:
+            Null: returns nothing
+        """
+        print("########################################-Complex Plane-######################################## \n")
+        print(self.plane , "\n")
+        print("############################################################################################### \n")
+        return
+
+    def refresh(self):
+        """this function resets self.plane to private stored variables that define the table
+        and clears all functions applied by setting self.fs = []
+        Args:
+           none
+        Return:
+           Null: returns nothing
+        """
+        self.__setPlane(self.xmin,self.xmax,self.xlen,self.ymin,self.ymax,self.ylen)
+        self.fs = []
+        return
+
+    def apply(self, f, addTofs):
+        """this function adds given input f to self.fs, then
+        applies f to all pnts in self.plane
+        Args:
+            addTofs (bool): if True, input f is appended to fs. if False, f not appended to fs
+            f (fxn): complex function
+        Return:
+            Null: returns nothing
+        """
+        if addTofs == True:
+            self.fs.append(f)
+        self.plane = f(self.plane)
+        return
+
     def zoom(self,xmin,xmax,xlen,ymin,ymax,ylen):
         """this function changes the table size using given input values,
         and re-applys all f in self.fs. this is achieved by calling setPlane and
         applyAllF, see also these fxns
         Args:
-            self (key word): to refrence private vars
             xmin (int): minimum x value in table
             xmax (int): maximum x value in table
             xlen (int): # x points
@@ -152,27 +152,41 @@ class ArrayComplexPlane(AbsComplexPlane):
             Null: returns nothing
         """
         self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
-        self.applyAllf()
+        for k in range(len(self.fs)):
+            self.apply(self.fs[k],False)
         return
+
+#
+
+
+
+
+
+
+
+
+
+
+
 
 ##
     #FOR TESTING ONLY, DELETE FOR FINAL SUBMISSION
 ##
 myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
-myPlane.printTable()
+myPlane.printPlane()
 
 def f(x):
     return x*x
 
-myPlane.apply(f)
+myPlane.apply(f,True)
 print("APPLY f() TO PLANE")
-myPlane.printTable()
+myPlane.printPlane()
 myPlane.refresh()
 print("REFRESHED PLANE")
-myPlane.printTable()
+myPlane.printPlane()
 myPlane.zoom(-2,2,5,-2,2,5)
 print("ZOOMED PLANE")
-myPlane.printTable()
+myPlane.printPlane()
 
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
