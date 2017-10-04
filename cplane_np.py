@@ -155,37 +155,6 @@ class ArrayComplexPlane(AbsComplexPlane):
             self.apply(self.fs[k],False)
         return
 
-#
-
-
-
-
-
-
-
-
-
-
-
-
-##
-    #FOR TESTING ONLY, DELETE FOR FINAL SUBMISSION
-##
-myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
-myPlane.printPlane()
-
-def f(x):
-    return x*x
-
-myPlane.apply(f,True)
-print("APPLY f() TO PLANE")
-myPlane.printPlane()
-myPlane.refresh()
-print("REFRESHED PLANE")
-myPlane.printPlane()
-myPlane.zoom(-2,2,5,-2,2,5)
-print("ZOOMED PLANE")
-myPlane.printPlane()
 
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
