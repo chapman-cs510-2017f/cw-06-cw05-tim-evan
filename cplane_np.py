@@ -12,7 +12,6 @@ from abscplane import AbsComplexPlane
 # Course: CS510 Fall 2017
 # Assignment: Classwork 06
 ###
-from abscplane import AbsComplexPlane
 
 class ArrayComplexPlane(AbsComplexPlane):
     """ArrayComplexPlane that subclasses the abstract base class AbsComplexPlanes
