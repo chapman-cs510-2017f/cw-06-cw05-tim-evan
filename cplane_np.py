@@ -40,14 +40,13 @@ class ArrayComplexPlane(AbsComplexPlane):
         self.fs = []   #stays list, DO NOT change to numpy array
 
         ##  Implementing private var self.plane using numpy  ##
+        #self.plane = self.setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
         xx, yy = np.meshgrid(x, y)
         self.plane = xx - yy*1j
 
         self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
-
-
         return
 
     def printTable(self):
@@ -107,7 +106,7 @@ class ArrayComplexPlane(AbsComplexPlane):
             self.plane = f(self.plane)
         return
 
-    def setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen):
+    def __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen):
         """this function sets private vars to given input,
         and uses given input to create and set self.plane
         Args:
@@ -152,7 +151,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         Return:
             Null: returns nothing
         """
-        self.setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
+        self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         self.applyAllf()
         return
 
