@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import pandas as pd
 from abscplane import AbsComplexPlane
 
 ###
@@ -41,8 +42,11 @@ class ArrayComplexPlane(AbsComplexPlane):
         ##  Implementing private var self.plane using numpy  ##
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
-        x, y = np.meshgrid(x, y)
-        self.plane = x - y*1j
+        xx, yy = np.meshgrid(x, y)
+        self.plane = xx - yy*1j
+
+        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
+
 
         return
 
@@ -69,8 +73,10 @@ class ArrayComplexPlane(AbsComplexPlane):
 
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
-        x, y = np.meshgrid(x, y)
-        self.plane = x - y*1j
+        xx, yy = np.meshgrid(x, y)
+        self.plane = xx - yy*1j
+
+        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
 
         self.fs = []
         return
@@ -124,8 +130,11 @@ class ArrayComplexPlane(AbsComplexPlane):
 
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
-        x, y = np.meshgrid(x, y)
-        self.plane = x - y*1j
+        xx, yy = np.meshgrid(x, y)
+        self.plane = xx - yy*1j
+
+        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
+
         return
 
     def zoom(self,xmin,xmax,xlen,ymin,ymax,ylen):
@@ -157,12 +166,14 @@ def f(x):
     return x*x
 
 myPlane.apply(f)
+print("APPLY f() TO PLANE")
 myPlane.printTable()
 myPlane.refresh()
+print("REFRESHED PLANE")
 myPlane.printTable()
 myPlane.zoom(-2,2,5,-2,2,5)
+print("ZOOMED PLANE")
 myPlane.printTable()
-
 
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
