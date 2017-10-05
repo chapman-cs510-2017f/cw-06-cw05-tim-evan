@@ -52,22 +52,10 @@ class ArrayComplexPlane(AbsComplexPlane):
         """
 
         ##   Implementing private vars  ##
-        self.xmin  = xmin
-        self.xmax  = xmax
-        self.xlen  = xlen
-        self.ymin  = ymin
-        self.ymax  = ymax
-        self.ylen  = ylen
-        self.fs = []   #stays list, DO NOT change to numpy array
+        self.fs = []
 
-        ##  Implementing private var self.plane using numpy  ##
-        #self.plane = self.setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
-        x = np.linspace(self.xmin,self.xmax,self.xlen)
-        y = np.linspace(self.ymin,self.ymax,self.ylen)
-        xx, yy = np.meshgrid(x, y)
-        self.plane = xx - yy*1j
-
-        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
+        ##  Implementing private var self.plane using numpy, this function also implements the other arguments  ##
+        self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         return
 
     def __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen):
@@ -100,6 +88,12 @@ class ArrayComplexPlane(AbsComplexPlane):
         return
 
     def getPlane():
+        """this function returns self.plane
+        Args:
+            none
+        Return:
+            self.plane (np meshgrid) : private arg self.plane that holds the complex plane
+        """
         return self.plane
 
     def printPlane(self):
@@ -158,8 +152,32 @@ class ArrayComplexPlane(AbsComplexPlane):
         for k in range(len(self.fs)):
             self.apply(self.fs[k],False)
         return
+#
 
 
+
+
+
+
+
+
+"""
+myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
+print("myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)")
+myPlane.printPlane()
+def f(x):
+    return x*x
+
+myPlane.apply(f,True)
+print("myPlane.apply(f,True)")
+myPlane.printPlane()
+myPlane.zoom(-2,2,5,-2,2,5)
+print("myPlane.zoom(-2,2,5,-2,2,5)")
+myPlane.printPlane()
+myPlane.refresh()
+print("myPlane.refresh()")
+myPlane.printPlane()
+"""
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
     #       SINCE WE ARE ONLY USING THE CODE IN THE JUPYTER NOTEBOOK
