@@ -30,6 +30,7 @@ class ArrayComplexPlane(AbsComplexPlane):
     Functions:
         __init__(self,xmin,xmax,xlen,ymin,ymax,ylen)    :constructor, sets all args to given input, then constructs plane attribute using args
         __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen)  :private fxn that acts much like a second constructor, resets plane and args to given input
+        getPlane()                                      :returns plane
         printPlane(self)                                :prints plane
         refresh(self)                                   :resets plane to args values and sets fs = []. does this by calling __setPlane, then clearing the fs
         apply(self, f, addTofs)                         :applys function f to all pnts in plane, and adds f to fs iff addTofs = True
@@ -97,6 +98,9 @@ class ArrayComplexPlane(AbsComplexPlane):
         self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
 
         return
+
+    def getPlane():
+        return self.plane
 
     def printPlane(self):
         """this function prints complex plane in a legible fashion.
