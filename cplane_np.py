@@ -50,10 +50,6 @@ class ArrayComplexPlane(AbsComplexPlane):
         Return:
             Null: returns nothing
         """
-
-        ##   Implementing private vars  ##
-        self.fs = []
-
         ##  Implementing private var self.plane using numpy, this function also implements the other arguments  ##
         self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         return
@@ -77,6 +73,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         self.ymin  = ymin
         self.ymax  = ymax
         self.ylen  = ylen
+        self.fs = []
 
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
@@ -117,10 +114,9 @@ class ArrayComplexPlane(AbsComplexPlane):
            Null: returns nothing
         """
         self.__setPlane(self.xmin,self.xmax,self.xlen,self.ymin,self.ymax,self.ylen)
-        self.fs = []
         return
 
-    def apply(self, f, addTofs):
+    def apply(self, f):
         """this function adds given input f to self.fs, then
         applies f to all pnts in self.plane
         Args:
@@ -129,8 +125,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         Return:
             Null: returns nothing
         """
-        if addTofs == True:
-            self.fs.append(f)
+        self.fs.append(f)
         self.plane = f(self.plane)
         return
 
@@ -150,7 +145,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         """
         self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         for k in range(len(self.fs)):
-            self.apply(self.fs[k],False)
+            self.apply(self.fs[k])
         return
 #
 
@@ -161,15 +156,15 @@ class ArrayComplexPlane(AbsComplexPlane):
 
 
 
-"""
+
 myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
 print("myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)")
 myPlane.printPlane()
 def f(x):
     return x*x
 
-myPlane.apply(f,True)
-print("myPlane.apply(f,True)")
+myPlane.apply(f)
+print("myPlane.apply(f)")
 myPlane.printPlane()
 myPlane.zoom(-2,2,5,-2,2,5)
 print("myPlane.zoom(-2,2,5,-2,2,5)")
@@ -177,7 +172,7 @@ myPlane.printPlane()
 myPlane.refresh()
 print("myPlane.refresh()")
 myPlane.printPlane()
-"""
+
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
     #       SINCE WE ARE ONLY USING THE CODE IN THE JUPYTER NOTEBOOK
