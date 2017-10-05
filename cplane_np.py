@@ -29,11 +29,11 @@ class ArrayComplexPlane(AbsComplexPlane):
 
     Functions:
         __init__(self,xmin,xmax,xlen,ymin,ymax,ylen)    :constructor, sets all args to given input, then constructs plane attribute using args
-        __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen)  :private fxn that acts much like a second constructor, resets plane and args to given input
+        __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen)  :private fxn that acts much like a second constructor, resets plane and args to given input. sets fs = []
         getPlane()                                      :returns plane
         printPlane(self)                                :prints plane
-        refresh(self)                                   :resets plane to args values and sets fs = []. does this by calling __setPlane, then clearing the fs
-        apply(self, f, addTofs)                         :applys function f to all pnts in plane, and adds f to fs iff addTofs = True
+        refresh(self)                                   :resets plane to args values and sets fs = []. does this by calling __setPlane
+        apply(self, f)                                  :applys function f to all pnts in plane
         zoom(self,xmin,xmax,xlen,ymin,ymax,ylen)        :resets plane size and reapplys all f in fs in order. does this using apply and __setPlane
     """
 
@@ -55,7 +55,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         return
 
     def __setPlane(self,xmin,xmax,xlen,ymin,ymax,ylen):
-        """this function sets private vars to given input,
+        """this function sets private vars to given input, and initializes fs = []
         and uses given input to create and set self.plane
         Args:
             xmin (int): minimum x value in table
@@ -106,8 +106,8 @@ class ArrayComplexPlane(AbsComplexPlane):
         return
 
     def refresh(self):
-        """this function resets self.plane to private stored variables that define the table
-        and clears all functions applied by setting self.fs = []
+        """this function resets self.plane to private stored variables that define the plane
+        and clears all functions applied by setting self.fs = [] using setPlane()
         Args:
            none
         Return:
