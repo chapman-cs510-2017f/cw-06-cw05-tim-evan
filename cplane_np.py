@@ -51,6 +51,7 @@ class ArrayComplexPlane(AbsComplexPlane):
             Null: returns nothing
         """
         ##  Implementing private var self.plane using numpy, this function also implements the other arguments  ##
+        self.fs = []
         self.__setPlane(xmin,xmax,xlen,ymin,ymax,ylen)
         return
 
@@ -73,18 +74,17 @@ class ArrayComplexPlane(AbsComplexPlane):
         self.ymin  = ymin
         self.ymax  = ymax
         self.ylen  = ylen
-        self.fs = []
 
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
         xx, yy = np.meshgrid(x, y)
-        self.plane = xx - yy*1j
+        self.plane = xx - yy*1j                                    ##-yy1j so that the value is flipped and the top right of the plane is positive real and positive imaginary so that it conforms with convention
 
         self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
 
         return
 
-    def getPlane():
+    def getPlane(self):
         """this function returns self.plane
         Args:
             none
@@ -113,6 +113,7 @@ class ArrayComplexPlane(AbsComplexPlane):
         Return:
            Null: returns nothing
         """
+        self.fs = []
         self.__setPlane(self.xmin,self.xmax,self.xlen,self.ymin,self.ymax,self.ylen)
         return
 
@@ -155,8 +156,7 @@ class ArrayComplexPlane(AbsComplexPlane):
 
 
 
-
-
+'''
 myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
 print("myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)")
 myPlane.printPlane()
@@ -172,30 +172,12 @@ myPlane.printPlane()
 myPlane.refresh()
 print("myPlane.refresh()")
 myPlane.printPlane()
-
+print(myPlane.getPlane())
+'''
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
     #       SINCE WE ARE ONLY USING THE CODE IN THE JUPYTER NOTEBOOK
 ##
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
