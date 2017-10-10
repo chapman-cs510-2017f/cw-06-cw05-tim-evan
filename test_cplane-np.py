@@ -16,32 +16,35 @@ import pandas as pd
 ###
 
 #evaluate each methods in the class of cplane_np
-dfInput = [[0,2],[3j,2+3j]]
-dfInput2 = [[3+1j,4+1j],[3+2j,4+2j]]
+dfInput = [[(-1-1j),-1j,(1-1j)],[(-1+1j),1j,(1+1j)]]
+dfInputApply = [[2j,-1,-2j],[-2j,-1,2jj]]
+dfInputZoom = [[2j,(3+4j)],[(-3+4j),8j]]
 
 def f(z):
-    return z+2
+    return z*z
 
 def test_cplane():
-    myPlane = cp.ArrayComplexPlane(0,2,2,0,3,2)
+    myPlane = cp.ArrayComplexPlane(-1,1,3,-1,1,2)
     test1 = pd.DataFrame(dfInput,index=['y1*i', 'y2*i'], columns=['x1','x2'])
-    assert_frame_equal(myPlane.plane, test1)
-    
+    assert_frame_equal(myPlane.getPlane(), test1)
+
 def test_apply():
-    myPlane = cp.ArrayComplexPlane(0,2,2,0,3,2)
-    test2 = pd.DataFrame(dfInput,index=['y1*i', 'y2*i'], columns=['x1','x2'])
-    assert_frame_equal(myPlane.plane, test2, check_dtype=False)
+    myPlane = cp.ArrayComplexPlane(-1,1,3,-1,1,2)
+    myPlane.apply(f)
+    test2 = pd.DataFrame(dfInputApply,index=['y1*i', 'y2*i'], columns=['x1','x2'])
+    assert_frame_equal(myPlane.getPlane(), test2, check_dtype=False)
 
 def test_zoom():
-    myPlane = cp.ArrayComplexPlane(0,2,2,0,3,2)
+    myPlane = cp.ArrayComplexPlane(-1,1,3,-1,1,2)
     myPlane.apply(f)
     myPlane.zoom(1,2,2,1,2,2)
-    test4 = pd.DataFrame(dfInput2,index=['y1*i', 'y2*i'], columns=['x1','x2'])
-    assert_frame_equal(myPlane.plane, test4)
+    test4 = pd.DataFrame(dfInputZoom,index=['y1*i', 'y2*i'], columns=['x1','x2'])
+    assert_frame_equal(myPlane.getPlane(), test4)
 
 def test_refresh():
-    myPlane = cp.ArrayComplexPlane(0,2,2,0,3,2)
+    myPlane = cp.ArrayComplexPlane(-1,1,3,-1,1,2)
     myPlane.apply(f)
     myPlane.refresh()
-    test5 = pd.DataFrame([[0,2],[3j,2+3j]],index=['y1*i', 'y2*i'], columns=['x1','x2'])
-    assert_frame_equal(myPlane.plane, test5)
+    test5 = pd.DataFrame(dfInput,index=['y1*i', 'y2*i'], columns=['x1','x2'])
+    assert_frame_equal(myPlane.getPlane(), test5)
+

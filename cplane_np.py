@@ -78,9 +78,9 @@ class ArrayComplexPlane(AbsComplexPlane):
         x = np.linspace(self.xmin,self.xmax,self.xlen)
         y = np.linspace(self.ymin,self.ymax,self.ylen)
         xx, yy = np.meshgrid(x, y)
-        self.plane = xx - yy*1j                                    ##-yy1j so that the value is flipped and the top right of the plane is positive real and positive imaginary so that it conforms with convention
+        self.plane = xx + yy*1j                                    ##-yy1j so that the value is flipped and the top right of the plane is positive real and positive imaginary so that it conforms with convention
 
-        self.plane = pd.DataFrame(self.plane, index=-y*1j+0, columns=x)
+        self.plane = pd.DataFrame(self.plane, index=y*1j+0, columns=x)
 
         return
 
@@ -156,24 +156,30 @@ class ArrayComplexPlane(AbsComplexPlane):
 
 
 
-'''
-myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)
-print("myPlane = ArrayComplexPlane(-4,4,9,-4,4,9)")
+"""
+myPlane = ArrayComplexPlane(-1,1,3,-1,1,2)
+print("myPlane = ArrayComplexPlane(-1,1,3,-1,1,2)")
 myPlane.printPlane()
+
+
 def f(x):
     return x*x
 
 myPlane.apply(f)
 print("myPlane.apply(f)")
 myPlane.printPlane()
-myPlane.zoom(-2,2,5,-2,2,5)
-print("myPlane.zoom(-2,2,5,-2,2,5)")
-myPlane.printPlane()
+
 myPlane.refresh()
 print("myPlane.refresh()")
 myPlane.printPlane()
-print(myPlane.getPlane())
-'''
+
+myPlane.zoom(1,2,2,1,2,2)
+print("myPlane.zoom(1,2,2,1,2,2)")
+myPlane.printPlane()
+
+
+myPlane.getPlane()
+"""
 ##
     # NOTE: WE DO NOT NEED A MAIN BECAUSE WE ARE NOT ACCESSING FILE THROUGH COMMAND TERMINAL.
     #       SINCE WE ARE ONLY USING THE CODE IN THE JUPYTER NOTEBOOK
