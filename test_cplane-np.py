@@ -17,7 +17,7 @@ import pandas as pd
 
 #evaluate each methods in the class of cplane_np
 dfInput = [[(-1-1j),-1j,(1-1j)],[(-1+1j),1j,(1+1j)]]
-dfInputApply = [[2j,-1,-2j],[-2j,-1,2jj]]
+dfInputApply = [[2j,-1,-2j],[-2j,-1,2j]]
 dfInputZoom = [[2j,(3+4j)],[(-3+4j),8j]]
 
 def f(z):
